@@ -11,7 +11,7 @@ public class DiagramModel {
 
     private Circle circle;
 
-    // break the circle into sectors or "pies"
+    // break the circle into sectors of "pies"
     private List<Point> sectors = new ArrayList<>();
 
     // lines connecting sectors points
@@ -55,14 +55,6 @@ public class DiagramModel {
             lines.add(new Line(points.get(i), points.get(endPointIndex)));
         }
        return lines;
-    }
-
-    public int getMultiplier() {
-        return multiplier;
-    }
-
-    public List<Point> getSectors() {
-        return sectors;
     }
 
     public List<Line> getLines() {

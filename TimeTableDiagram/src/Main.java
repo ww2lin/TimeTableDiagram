@@ -21,32 +21,10 @@ public class Main extends JApplet{
         add(diagramView);
 
         // Starts a thread that bump the # of multiplier after some units of time.
-        new Thread(new TimerRunnable(diagramView)).start();
-    }
+        MultiplierUpdaterRunnable runnable = new MultiplierUpdaterRunnable(diagramView, SCREEN_SIZE, SCREEN_SIZE, CIRCLE_RADIUS, NUM_OF_SECTORS, MULTIPLIER);
+        new Thread(runnable).start();
 
-    private class TimerRunnable implements Runnable {
-        private static final int TIME_TO_PAUSE_IN_MS = 400;
-        private int multiplier = MULTIPLIER + 1;
-
-        DiagramView diagramView;
-
-        public TimerRunnable(DiagramView diagramView) {
-            this.diagramView = diagramView;
-        }
-
-        @Override
-        public void run() {
-            try {
-                while (true) {
-                    diagramView.getLatch().await();
-                    Thread.sleep(TIME_TO_PAUSE_IN_MS);
-                    diagramView.update(new DiagramModel(SCREEN_SIZE, SCREEN_SIZE, CIRCLE_RADIUS, NUM_OF_SECTORS, multiplier++));
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-
-            }
-        }
+        diagramView.setViewUpdaterCallback(runnable);
     }
 
 }

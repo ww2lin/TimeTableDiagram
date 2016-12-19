@@ -1,19 +1,10 @@
 package Shape;
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by AlexLin on 12/18/16.
  */
 public class Circle {
 
-    // lines to connect the sectors
-    private List<List<Point>> lines = new ArrayList<>();
-
-    private final int screenWidth;
-    private final int screenHeight;
     private final double originY;
     private final double originX;
 
@@ -23,9 +14,6 @@ public class Circle {
     private final int diameter;
 
     public Circle(int screenWidth, int screenHeight, int radius) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
         originY = screenHeight / 2;
         originX = screenWidth / 2;
 
