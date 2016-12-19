@@ -5,6 +5,8 @@ package Interfaces;
  */
 public interface ViewUpdaterCallback {
     void onPause();
+    boolean isPause();
     void increaseSpeed();
     void decreaseSpeed();
+    void seek(String multiplier);
 }

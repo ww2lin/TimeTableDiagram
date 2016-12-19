@@ -1,4 +1,5 @@
 import Interfaces.ViewUpdaterCallback;
+import Util.Util;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -17,8 +18,7 @@ public class MultiplierUpdaterRunnable implements Runnable, ViewUpdaterCallback 
     private int sleepTimeInMs = 400;
     private AtomicBoolean pause = new AtomicBoolean(false);
 
-    public MultiplierUpdaterRunnable(DiagramView diagramView, int screenWidth, int screenHeight, int radius, int numSectors, int multiplier) {
-        this.diagramView = diagramView;
+    public MultiplierUpdaterRunnable(int screenWidth, int screenHeight, int radius, int numSectors, int multiplier) {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.radius = radius;
@@ -29,18 +29,30 @@ public class MultiplierUpdaterRunnable implements Runnable, ViewUpdaterCallback 
     @Override
     public void run() {
         try {
-            while (true) {
+            while (diagramView != null) {
+                diagramView.getLatch().await();
+                Thread.sleep(sleepTimeInMs);
+
+                // pause this
                 while (pause.get()) {
                     Thread.sleep(DEFAULT_PAUSE_TIME_IN_MS);
                 }
-                diagramView.getLatch().await();
-                Thread.sleep(sleepTimeInMs);
+
+                if (multiplier == Constants.NUM_OF_SECTORS){
+                    multiplier = Constants.MULTIPLIER - 1;
+                }
                 diagramView.update(new DiagramModel(screenWidth, screenHeight, radius, numSectors, ++multiplier));
+
+
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
 
         }
+    }
+
+    public void setDiagramView(DiagramView diagramView) {
+        this.diagramView = diagramView;
     }
 
     @Override
@@ -58,5 +70,20 @@ public class MultiplierUpdaterRunnable implements Runnable, ViewUpdaterCallback 
     @Override
     public void decreaseSpeed() {
         sleepTimeInMs+=TIME_INCREMENT_IN_MS;
+    }
+
+    @Override
+    public void seek(String multiplier) {
+        int value = Util.parseInteger(multiplier, -1);
+        if (value >= Constants.MULTIPLIER && value <= Constants.NUM_OF_SECTORS) {
+            pause.set(true);
+            this.multiplier = value;
+            diagramView.update(new DiagramModel(screenWidth, screenHeight, radius, numSectors, value));
+        }
+    }
+
+    @Override
+    public boolean isPause() {
+        return pause.get();
     }
 }

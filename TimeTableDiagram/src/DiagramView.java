@@ -9,6 +9,7 @@ import java.util.concurrent.CountDownLatch;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  * Created by AlexLin on 12/18/16.
@@ -19,37 +20,61 @@ public class DiagramView extends JPanel{
     private CountDownLatch latch = new CountDownLatch(1);
     private ViewUpdaterCallback viewUpdaterCallback;
 
-    public DiagramView(DiagramModel diagramModel) {
+
+    JButton pauseButton = new JButton("Paused");
+
+    JLabel speedLabel = new JLabel("Speed: ");
+    JButton increaseSpeed = new JButton("+");
+    JButton decreaseSpeed = new JButton("-");
+
+    JLabel multiplierLabel = new JLabel();
+
+    JLabel seekLabel = new JLabel("Seek: ");
+    JTextField multiplierTextField = new JTextField(3);
+
+    JButton seekButton = new JButton("Enter");
+
+    public DiagramView(DiagramModel diagramModel, ViewUpdaterCallback viewUpdaterCallback) {
         super();
+        this.viewUpdaterCallback = viewUpdaterCallback;
         setupUI();
         update(diagramModel);
+
     }
 
     public void update(DiagramModel diagramModel) {
         this.diagramModel = diagramModel;
         this.setSize(diagramModel.getScreenWidth(), diagramModel.getScreenHeight());
         setSize(diagramModel.getScreenWidth(), diagramModel.getScreenHeight());
-
+        multiplierLabel.setText("Multiplier: "+ diagramModel.getMultiplier());
         repaint();
     }
 
     private void setupUI(){
         setLayout(new FlowLayout());
-        JButton pauseButton = new JButton("Pause");
-        JLabel speedLabel = new JLabel("Speed: ");
-        JButton increaseSpeed = new JButton("+");
-        JButton decreaseSpeed = new JButton("-");
 
         add(speedLabel);
         add(increaseSpeed);
         add(decreaseSpeed);
         add(pauseButton);
+        add(multiplierLabel);
+        add(seekLabel);
+        add(multiplierTextField);
+        add(seekButton);
 
-        pauseButton.addActionListener(e -> viewUpdaterCallback.onPause());
+        pauseButton.addActionListener(e -> {
+            viewUpdaterCallback.onPause();
+            pauseButton.setText(viewUpdaterCallback.isPause() ? "Resume" : "Pause");
+        });
 
         increaseSpeed.addActionListener(e -> viewUpdaterCallback.increaseSpeed());
 
         decreaseSpeed.addActionListener(e -> viewUpdaterCallback.decreaseSpeed());
+
+        seekButton.addActionListener(e -> {
+            viewUpdaterCallback.seek(multiplierTextField.getText());
+            pauseButton.setText(viewUpdaterCallback.isPause() ? "Resume" : "Pause");
+        });
     }
 
     @Override
@@ -81,7 +106,4 @@ public class DiagramView extends JPanel{
         return latch;
     }
 
-    public void setViewUpdaterCallback(ViewUpdaterCallback viewUpdaterCallback) {
-        this.viewUpdaterCallback = viewUpdaterCallback;
-    }
 }
