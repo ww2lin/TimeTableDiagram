@@ -8,7 +8,7 @@ Note: The applet does not handle window size changes. By changing the window siz
 
 Examples:
 
-[[https://github.com/ww2lin/TimeTableDiagram/1.png]]
-[[https://github.com/ww2lin/TimeTableDiagram/2.png]]
-[[https://github.com/ww2lin/TimeTableDiagram/3.png]]
-[[https://github.com/ww2lin/TimeTableDiagram/4.png]]
+![alt image1](https://github.com/ww2lin/TimeTableDiagram/blob/master/1.png)
+![alt image1](https://github.com/ww2lin/TimeTableDiagram/blob/master/2.png)
+![alt image1](https://github.com/ww2lin/TimeTableDiagram/blob/master/3.png)
+![alt image1](https://github.com/ww2lin/TimeTableDiagram/blob/master/4.png)
