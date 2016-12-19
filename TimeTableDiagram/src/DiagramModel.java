@@ -57,6 +57,10 @@ public class DiagramModel {
        return lines;
     }
 
+    public int getMultiplier() {
+        return multiplier;
+    }
+
     public List<Point> getSectors() {
         return sectors;
     }

@@ -1,6 +1,8 @@
 import Shape.Circle;
 import Shape.Line;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import javax.swing.JPanel;
 
@@ -31,6 +33,15 @@ public class DiagramView extends JPanel{
         // Draw the outer circle
         Circle circle = diagramModel.getCircle();
         g.drawOval(circle.getOffsetX(), circle.getOffsetY(), circle.getDiameter(), circle.getDiameter());
+
+        // set the color
+        Random random = new Random();
+        final float hue = random.nextFloat();
+        // Saturation between 0.1 and 0.3
+        final float saturation = (random.nextInt(2000) + 1000) / 10000f;
+        final float luminance = 0.9f;
+        final Color color = Color.getHSBColor(hue, saturation, luminance);
+        g.setColor(color);
 
         for (Line line : diagramModel.getLines()) {
             g.drawLine(line.x1(), line.y1(), line.x2(), line.y2());

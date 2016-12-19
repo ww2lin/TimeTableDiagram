@@ -25,7 +25,7 @@ public class Main extends JApplet{
     }
 
     private class TimerRunnable implements Runnable {
-        private static final int TIME_TO_PAUSE_IN_MS = 100;
+        private static final int TIME_TO_PAUSE_IN_MS = 400;
         private int multiplier = MULTIPLIER + 1;
 
         DiagramView diagramView;
